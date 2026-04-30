@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0a0a0c">
   <title>ARK STUDIO · Design Studio</title>
-  <link rel="manifest" href="manifest.json">
+  
+  <!-- LOCAL CSS (Offline) -->
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/all.min.css">
+  
+  <!-- LOCAL JS (Offline) -->
   <script src="lib/fabric.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="lib/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -36,69 +39,117 @@
       <button class="close-drawer" id="closeDrawer">✕</button>
     </div>
 
-    <!-- Step 1: Shapes -->
+    <!-- STEP 1: SHAPES (50+) -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-shapes"></i> 1. CONTAINER SHAPES (50+)</div>
       <div class="shape-grid" id="shapeGrid"></div>
+      <div class="control-group">
+        <small style="color:#777;font-size:10px;">Click shape → drag ANY corner to stretch independently</small>
+      </div>
     </div>
 
-    <!-- Step 2: Image -->
+    <!-- STEP 2: IMAGE -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-image"></i> 2. FILL WITH IMAGE</div>
       <button id="addImageBtn" class="btn-full"><i class="fas fa-file-image"></i> Add Image to Shape</button>
       <div class="control-group">
         <label>Opacity Gradient Direction</label>
         <select id="opacityDirection">
-          <option value="none">None</option><option value="left">Left → Right</option>
-          <option value="right">Right → Left</option><option value="top">Top → Bottom</option>
+          <option value="none">None</option>
+          <option value="left">Left → Right</option>
+          <option value="right">Right → Left</option>
+          <option value="top">Top → Bottom</option>
           <option value="bottom">Bottom → Top</option>
         </select>
-        <label>Strength</label><input type="range" id="opacityStrength" min="0" max="100" value="50">
+        <label>Strength</label>
+        <input type="range" id="opacityStrength" min="0" max="100" value="50">
       </div>
       <button id="maskLineBtn" class="btn-gold btn-full"><i class="fas fa-draw-polygon"></i> Mask Opacity Line</button>
     </div>
 
-    <!-- Step 3: Typography -->
+    <!-- STEP 3: TYPOGRAPHY -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-font"></i> 3. TYPOGRAPHY</div>
       <button id="addTextBtn" class="btn-full"><i class="fas fa-plus-circle"></i> Add Text</button>
-      <div class="control-group"><label>Rotate (0-360°)</label><input type="range" id="textRotate" min="0" max="360" value="0"></div>
-      <div class="control-group"><button id="mirrorTextBtn">🪞 Mirror</button><button id="apply3DTextBtn" class="btn-gold">✨ 3D Gradient</button></div>
-      <div class="control-group"><label>Bullet Style</label><select id="bulletStyle"><option value="•">• Dot</option><option value="◆">◆ Solid</option><option value="★">★ Star</option><option value="●">● Circle</option></select></div>
-      <div class="control-group"><label>Custom Font</label><input type="text" id="customFont" placeholder="Font name"><button id="uploadFontBtn">Upload Font</button></div>
+      <div class="control-group">
+        <label>Rotate (0-360°)</label>
+        <input type="range" id="textRotate" min="0" max="360" value="0">
+      </div>
+      <div class="control-group">
+        <button id="mirrorTextBtn">🪞 Mirror</button>
+        <button id="apply3DTextBtn" class="btn-gold">✨ 3D Gradient</button>
+      </div>
+      <div class="control-group">
+        <label>Bullet Style</label>
+        <select id="bulletStyle">
+          <option value="•">• Dot</option>
+          <option value="◆">◆ Solid</option>
+          <option value="★">★ Star</option>
+          <option value="●">● Circle</option>
+          <option value="▪">▪ Square</option>
+          <option value="▸">▸ Arrow</option>
+        </select>
+      </div>
     </div>
 
-    <!-- Step 4: Backdrop -->
+    <!-- STEP 4: BACKDROP SHADES -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-palette"></i> 4. BACKDROP SHADES</div>
-      <div class="control-group"><label>Color</label><input type="color" id="shadeColor" value="#1a1a2e"></div>
-      <div class="control-group"><label>Strength</label><input type="range" id="shadeStrength" min="0" max="100" value="30"></div>
-      <div class="control-group"><label>Opacity Dial (360°)</label><input type="range" id="shadeOpacity" min="0" max="1" step="0.01" value="0.3"></div>
+      <div class="control-group">
+        <label>Color</label>
+        <input type="color" id="shadeColor" value="#1a1a2e">
+        <label>Strength</label>
+        <input type="range" id="shadeStrength" min="0" max="100" value="30">
+        <label>Opacity Dial (360°)</label>
+        <input type="range" id="shadeOpacity" min="0" max="1" step="0.01" value="0.3">
+      </div>
       <button id="applyShadeBtn" class="btn-full">Apply Backdrop</button>
     </div>
 
-    <!-- Step 5: Borders -->
+    <!-- STEP 5: BORDERS -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-border-all"></i> 5. BORDERS</div>
-      <div class="control-group"><label>Strength (px)</label><input type="range" id="borderWidth" min="0" max="20" value="2"></div>
-      <div class="control-group"><label>Color</label><input type="color" id="borderColor" value="#e0b05a"></div>
-      <div class="control-group"><label>Type</label><select id="borderType"><option value="solid">Solid</option><option value="dotted">Dotted</option><option value="dashed">Dashed</option></select></div>
-      <div class="control-group"><label>Opacity Dial</label><input type="range" id="borderOpacity" min="0" max="1" step="0.01" value="1"></div>
+      <div class="control-group">
+        <label>Strength (px)</label>
+        <input type="range" id="borderWidth" min="0" max="20" value="2">
+        <label>Color</label>
+        <input type="color" id="borderColor" value="#e0b05a">
+        <label>Type</label>
+        <select id="borderType">
+          <option value="solid">Solid</option>
+          <option value="dotted">Dotted</option>
+          <option value="dashed">Dashed</option>
+        </select>
+        <label>Opacity Dial</label>
+        <input type="range" id="borderOpacity" min="0" max="1" step="0.01" value="1">
+      </div>
       <button id="applyBorderBtn" class="btn-full">Apply Border</button>
     </div>
 
-    <!-- Step 6: Lines -->
+    <!-- STEP 6: LINES -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-grip-lines"></i> 6. LINES</div>
       <button id="addLineBtn" class="btn-gold btn-full"><i class="fas fa-plus"></i> Add Line</button>
-      <div class="control-group"><label>Line Width</label><input type="range" id="lineWidth" min="1" max="20" value="3"></div>
-      <div class="control-group"><label>Line Color</label><input type="color" id="lineColor" value="#ffffff"></div>
-      <div class="control-group"><label>Line Type</label><select id="lineType"><option value="solid">Solid</option><option value="dot">Dot</option><option value="dash">Dash</option></select></div>
+      <div class="control-group">
+        <label>Line Width</label>
+        <input type="range" id="lineWidth" min="1" max="20" value="3">
+        <label>Line Color</label>
+        <input type="color" id="lineColor" value="#ffffff">
+        <label>Line Type</label>
+        <select id="lineType">
+          <option value="solid">Solid</option>
+          <option value="dot">Dot</option>
+          <option value="dash">Dash</option>
+        </select>
+      </div>
     </div>
 
-    <!-- Undo/Redo -->
+    <!-- UNDO / REDO -->
     <div class="step-section">
-      <div class="undo-redo-group"><button id="undoBtn" class="btn-half">↩ Undo</button><button id="redoBtn" class="btn-half">↪ Redo</button></div>
+      <div class="undo-redo-group">
+        <button id="undoBtn" class="btn-half">↩ Undo</button>
+        <button id="redoBtn" class="btn-half">↪ Redo</button>
+      </div>
     </div>
   </div>
 

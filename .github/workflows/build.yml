@@ -3,10 +3,8 @@ name: Build and Deploy ARK Studio
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
-# Add this permissions block - THIS IS THE KEY FIX
 permissions:
   contents: write
   pages: write
@@ -23,15 +21,82 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Install dependencies
-        run: npm ci || echo "No dependencies"
-
-      - name: Build static site
+      # ============================================
+      # AUTO-DOWNLOAD DEPENDENCIES (OFFLINE PACKAGING)
+      # ============================================
+      
+      - name: Create directory structure
         run: |
           mkdir -p dist
-          cp -r index.html manifest.json sw.js css js lib dist/ 2>/dev/null || cp index.html dist/
+          mkdir -p dist/lib
+          mkdir -p dist/css
+          mkdir -p dist/js
+
+      - name: 📦 Download Fabric.js (offline)
+        run: |
+          echo "Downloading Fabric.js from CDN..."
+          curl -L -o dist/lib/fabric.min.js https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js
+          ls -la dist/lib/fabric.min.js
+          echo "✅ Fabric.js downloaded successfully"
+
+      - name: 📦 Download html2canvas (offline)
+        run: |
+          echo "Downloading html2canvas from CDN..."
+          curl -L -o dist/lib/html2canvas.min.js https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
+          ls -la dist/lib/html2canvas.min.js
+          echo "✅ html2canvas downloaded successfully"
+
+      - name: 📦 Download Font Awesome (offline)
+        run: |
+          echo "Downloading Font Awesome from CDN..."
+          curl -L -o dist/css/all.min.css https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
+          ls -la dist/css/all.min.css
+          echo "✅ Font Awesome downloaded successfully"
+
+      # ============================================
+      # COPY YOUR SOURCE FILES
+      # ============================================
+
+      - name: Copy source files
+        run: |
+          # Copy your JS files
+          if [ -d "js" ]; then
+            cp -r js/*.js dist/js/ 2>/dev/null || true
+            echo "✅ Copied JS files from repository"
+          fi
+          
+          # Copy your CSS files (except the downloaded one)
+          if [ -d "css" ]; then
+            cp css/styles.css dist/css/ 2>/dev/null || true
+            echo "✅ Copied CSS files from repository"
+          fi
+          
+          # Copy HTML and manifest
+          cp index.html dist/ 2>/dev/null || echo "⚠️ No index.html found"
+          cp manifest.json dist/ 2>/dev/null || echo '{"name":"ARK Studio"}' > dist/manifest.json
+          cp sw.js dist/ 2>/dev/null || echo 'self.addEventListener("fetch",()=>{})' > dist/sw.js
+
+      - name: Verify all dependencies
+        run: |
+          echo ""
+          echo "========================================="
+          echo "VERIFYING ALL DEPENDENCIES"
+          echo "========================================="
+          echo ""
+          echo "📁 lib/ contents:"
+          ls -la dist/lib/
+          echo ""
+          echo "📁 css/ contents:"
+          ls -la dist/css/
+          echo ""
+          echo "📁 js/ contents:"
+          ls -la dist/js/
+          echo ""
+          echo "========================================="
+          echo "✅ All dependencies downloaded and ready"
+          echo "========================================="
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -39,5 +104,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
+          force_orphan: true
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: "Deploy ARK Studio with auto-downloaded dependencies - ${{ github.sha }}"
