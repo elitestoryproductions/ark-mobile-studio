@@ -40,37 +40,13 @@
     <div class="step-section">
       <div class="step-title"><i class="fas fa-shapes"></i> 1. CONTAINER SHAPES (50+)</div>
       <div class="shape-grid" id="shapeGrid"></div>
-      <small style="color:#777;font-size:10px;">Top-right corner resizes only | Other corners stretch freely</small>
     </div>
 
     <!-- STEP 2: IMAGE -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-image"></i> 2. FILL WITH IMAGE</div>
       <button id="addImageBtn" class="btn-full"><i class="fas fa-file-image"></i> Add Image to Shape</button>
-      <button id="addCollageBtn" class="btn-full" style="margin-top:6px;"><i class="fas fa-th"></i> Create Collage</button>
       
-      <div class="control-group">
-        <label>Crop Preset</label>
-        <select id="cropPreset">
-          <option value="none">None</option>
-          <option value="circle">Circle Crop</option>
-          <option value="square">Square Crop</option>
-          <option value="rounded">Rounded Corners</option>
-        </select>
-      </div>
-
-      <div class="control-group">
-        <label>Effect</label>
-        <select id="imageEffect">
-          <option value="none">None</option>
-          <option value="grayscale">Grayscale</option>
-          <option value="sepia">Sepia</option>
-          <option value="brightness">Brightness</option>
-          <option value="contrast">Contrast</option>
-        </select>
-        <input type="range" id="effectStrength" min="0" max="100" value="50">
-      </div>
-
       <div class="control-group">
         <label>Opacity Gradient</label>
         <select id="opacityDirection">
@@ -79,13 +55,12 @@
           <option value="right">Right → Left</option>
           <option value="top">Top → Bottom</option>
           <option value="bottom">Bottom → Top</option>
-          <option value="angle">Free Angle</option>
         </select>
         <label>Strength</label>
         <input type="range" id="opacityStrength" min="0" max="100" value="50">
       </div>
       
-      <button id="maskLineBtn" class="btn-gold btn-full"><i class="fas fa-draw-polygon"></i> Add Mask Angle Line</button>
+      <button id="maskLineBtn" class="btn-gold btn-full"><i class="fas fa-draw-polygon"></i> Mask Opacity Line</button>
       
       <div class="control-group" style="margin-top: 16px; border-top: 1px solid #252530; padding-top: 12px;">
         <label><i class="fas fa-arrows-alt"></i> Position Image Inside Shape</label>
@@ -111,189 +86,66 @@
     <div class="step-section">
       <div class="step-title"><i class="fas fa-font"></i> 3. TYPOGRAPHY</div>
       <button id="addTextBtn" class="btn-full"><i class="fas fa-plus-circle"></i> Add Text</button>
-      
       <div class="control-group">
         <label>Rotate 360°</label>
         <input type="range" id="textRotate" min="0" max="360" value="0">
       </div>
-      
       <div class="control-group">
         <label>Font Size (px)</label>
         <input type="range" id="textSize" min="10" max="100" value="32">
       </div>
-      
-      <div class="control-group">
-        <label>Line Spacing</label>
-        <input type="range" id="lineSpacing" min="0" max="50" value="0">
-      </div>
-      
-      <div class="control-group">
-        <label>Character Spacing</label>
-        <input type="range" id="charSpacing" min="-20" max="50" value="0">
-      </div>
-      
       <div class="control-group">
         <label>Text Color</label>
         <input type="color" id="textColor" value="#2c2c2c">
       </div>
-      
-      <div class="control-group">
-        <label>Opacity Dial (360°)</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <input type="range" id="textOpacity" min="0" max="1" step="0.01" value="1">
-          <div class="dial-knob">◉</div>
-        </div>
-      </div>
-      
       <div class="control-group">
         <button id="mirrorTextBtn">🪞 Mirror</button>
-        <button id="apply3DTextBtn" class="btn-gold">✨ 3D + Gradient</button>
+        <button id="apply3DTextBtn" class="btn-gold">✨ 3D Effect</button>
       </div>
-      
       <div class="control-group">
-        <label>Bullet Point Style</label>
+        <label>Bullet Style</label>
         <select id="bulletStyle">
           <option value="•">• Dot</option>
-          <option value="◆">◆ Solid Diamond</option>
           <option value="★">★ Star</option>
+          <option value="◆">◆ Diamond</option>
           <option value="●">● Circle</option>
-          <option value="▪">▪ Square</option>
-          <option value="▸">▸ Arrow</option>
-          <option value="♥">♥ Heart</option>
-          <option value="♦">♦ Diamond</option>
-          <option value="♣">♣ Club</option>
-          <option value="♠">♠ Spade</option>
-          <option value="❖">❖ Diamond</option>
-          <option value="✿">✿ Flower</option>
-          <option value="✪">✪ Star</option>
-          <option value="➤">➤ Arrow</option>
-          <option value="➢">➢ Arrow</option>
-          <option value="»">» Double Arrow</option>
-          <option value="›">› Single Arrow</option>
-          <option value="•">• Bullet</option>
-          <option value="◦">◦ White Bullet</option>
-          <option value="▪">▪ Small Square</option>
-          <option value="▫">▫ White Square</option>
-          <option value="◘">◘ Inverse Bullet</option>
-          <option value="◙">◙ Circle</option>
-          <option value="◊">◊ Lozenge</option>
-          <option value="○">○ White Circle</option>
-          <option value="●">● Black Circle</option>
-          <option value="◐">◐ Circle</option>
-          <option value="◑">◑ Circle</option>
-          <option value="◒">◒ Circle</option>
-          <option value="◓">◓ Circle</option>
-          <option value="◔">◔ Circle</option>
-          <option value="◕">◕ Circle</option>
-          <option value="◖">◖ Circle</option>
-          <option value="◗">◗ Circle</option>
         </select>
-      </div>
-      
-      <div class="control-group">
-        <label>Text Between Dots</label>
-        <input type="text" id="betweenDots" placeholder="e.g., A • B • C">
-        <button id="applyBetweenDots" style="margin-top:5px;">Apply Pattern</button>
-      </div>
-      
-      <div class="control-group">
-        <label>Custom Font Upload</label>
-        <button id="uploadFontBtn">📁 Upload .ttf/.otf</button>
       </div>
     </div>
 
     <!-- STEP 4: BACKDROP SHADES -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-palette"></i> 4. BACKDROP SHADES</div>
-      
       <div class="control-group">
-        <label>Preset Shades</label>
-        <div class="color-grid" id="shadePresets">
-          <div class="color-swatch" style="background:#1a1a2e;"></div>
-          <div class="color-swatch" style="background:#2e1a1a;"></div>
-          <div class="color-swatch" style="background:#1a2e1a;"></div>
-          <div class="color-swatch" style="background:#2e2e1a;"></div>
-          <div class="color-swatch" style="background:#1a2e2e;"></div>
-          <div class="color-swatch" style="background:#2e1a2e;"></div>
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label>Custom Color</label>
+        <label>Color</label>
         <input type="color" id="shadeColor" value="#1a1a2e">
       </div>
-      
       <div class="control-group">
-        <label>Strength</label>
-        <input type="range" id="shadeStrength" min="0" max="100" value="30">
+        <label>Opacity</label>
+        <input type="range" id="shadeOpacity" min="0" max="1" step="0.01" value="0.3">
       </div>
-      
-      <div class="control-group">
-        <label>Effect Type</label>
-        <select id="shadeEffect">
-          <option value="normal">Normal</option>
-          <option value="multiply">Multiply</option>
-          <option value="screen">Screen</option>
-          <option value="overlay">Overlay</option>
-          <option value="soft-light">Soft Light</option>
-        </select>
-      </div>
-      
-      <div class="control-group">
-        <label>Opacity Dial (360°)</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <input type="range" id="shadeOpacity" min="0" max="1" step="0.01" value="0.3">
-          <div class="dial-knob">◉</div>
-        </div>
-      </div>
-      
       <button id="applyShadeBtn" class="btn-full">Apply Backdrop</button>
     </div>
 
     <!-- STEP 5: BORDERS -->
     <div class="step-section">
       <div class="step-title"><i class="fas fa-border-all"></i> 5. BORDERS</div>
-      
       <div class="control-group">
         <label>Strength (px)</label>
         <input type="range" id="borderWidth" min="0" max="20" value="2">
       </div>
-      
       <div class="control-group">
         <label>Color</label>
         <input type="color" id="borderColor" value="#e0b05a">
       </div>
-      
       <div class="control-group">
-        <label>Border Type</label>
+        <label>Type</label>
         <select id="borderType">
           <option value="solid">Solid</option>
           <option value="dotted">Dotted</option>
           <option value="dashed">Dashed</option>
-          <option value="double">Double</option>
-          <option value="groove">Groove</option>
-          <option value="ridge">Ridge</option>
         </select>
       </div>
-      
-      <div class="control-group">
-        <label>Gradient Effect</label>
-        <select id="borderGradient">
-          <option value="none">None</option>
-          <option value="gold">Gold Gradient</option>
-          <option value="silver">Silver Gradient</option>
-          <option value="rainbow">Rainbow</option>
-        </select>
-      </div>
-      
-      <div class="control-group">
-        <label>Opacity Dial (360°)</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <input type="range" id="borderOpacity" min="0" max="1" step="0.01" value="1">
-          <div class="dial-knob">◉</div>
-        </div>
-      </div>
-      
       <button id="applyBorderBtn" class="btn-full">Apply Border</button>
     </div>
 
@@ -301,42 +153,13 @@
     <div class="step-section">
       <div class="step-title"><i class="fas fa-grip-lines"></i> 6. LINES</div>
       <button id="addLineBtn" class="btn-gold btn-full"><i class="fas fa-plus"></i> Add Line</button>
-      
       <div class="control-group">
         <label>Line Width</label>
         <input type="range" id="lineWidth" min="1" max="20" value="3">
       </div>
-      
       <div class="control-group">
-        <label>Line Color</label>
+        <label>Color</label>
         <input type="color" id="lineColor" value="#e0b05a">
-      </div>
-      
-      <div class="control-group">
-        <label>Line Type</label>
-        <select id="lineType">
-          <option value="solid">Solid</option>
-          <option value="dot">Dot Pattern</option>
-          <option value="dash">Dash</option>
-          <option value="dash-dot">Dash-Dot</option>
-        </select>
-      </div>
-      
-      <div class="control-group">
-        <label>Gradient Effect</label>
-        <select id="lineGradient">
-          <option value="none">None</option>
-          <option value="gold">Gold Gradient</option>
-          <option value="metallic">Metallic</option>
-        </select>
-      </div>
-      
-      <div class="control-group">
-        <label>Opacity Dial (360°)</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <input type="range" id="lineOpacity" min="0" max="1" step="0.01" value="1">
-          <div class="dial-knob">◉</div>
-        </div>
       </div>
     </div>
 
@@ -352,13 +175,6 @@
   <div class="status" id="statusMsg">Ready | Tap magic wand to open tools</div>
 </div>
 
-<script src="js/undo-redo.js"></script>
-<script src="js/canvas-manager.js"></script>
-<script src="js/image-editor.js"></script>
-<script src="js/typography.js"></script>
-<script src="js/effects.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/file-upload.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
