@@ -1,0 +1,13 @@
+{
+  "name": "ark-studio-mobile",
+  "version": "1.0.0",
+  "description": "Complete offline mobile design studio with shapes, images, typography, effects",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "mkdir -p dist && cp -r index.html manifest.json sw.js css js assets dist/"
+  },
+  "keywords": ["design", "studio", "offline", "pwa", "mobile"],
+  "author": "ARK Studio",
+  "license": "MIT"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "ARK Studio",
+  "short_name": "ARK Studio",
+  "description": "Complete offline design studio",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0a0a0c",
+  "background_color": "#0a0a0c",
+  "icons": []
+}
