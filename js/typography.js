@@ -2,7 +2,7 @@ function addText() {
   if (!canvas) return;
   const text = new fabric.IText('Edit Me', { 
     left: 200, top: 200, fontSize: 32, fill: '#2c2c2c', fontFamily: 'Arial',
-    selectable: true, hasControls: true, hasRotatingPoint: true, charSpacing: 0, lineHeight: 1.2
+    selectable: true, hasControls: true, hasRotatingPoint: true
   });
   canvas.add(text);
   canvas.setActiveObject(text);
@@ -12,7 +12,7 @@ function addText() {
 
 function rotateText(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.rotate(parseInt(value));
     canvas.renderAll();
   }
@@ -20,7 +20,7 @@ function rotateText(value) {
 
 function mirrorText() {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('scaleX', active.scaleX * -1);
     canvas.renderAll();
     saveHistory();
@@ -30,31 +30,32 @@ function mirrorText() {
 
 function apply3DEffect() {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('shadow', '8px 8px 4px rgba(0,0,0,0.4)');
-    active.set('fill', 'linear-gradient(135deg, #e0b05a, #b47c2e, #8b5a1e)');
+    active.set('fill', '#e0b05a');
     canvas.renderAll();
     saveHistory();
-    updateStatus('3D gradient effect applied');
+    updateStatus('3D effect applied');
   }
 }
 
 function applyBulletStyle() {
   const active = canvas.getActiveObject();
   const bullet = document.getElementById('bulletStyle')?.value || '•';
-  if (active && active.type && active.type.includes('text')) {
-    const lines = active.text.split('\n');
-    const bulleted = lines.map(line => bullet + ' ' + line).join('\n');
-    active.set('text', bulleted);
-    canvas.renderAll();
-    updateStatus(`Bullet style: ${bullet}`);
+  if (active && active.type === 'i-text') {
+    const currentText = active.text || '';
+    if (!currentText.startsWith(bullet)) {
+      active.set('text', bullet + ' ' + currentText);
+      canvas.renderAll();
+      updateStatus(`Bullet style: ${bullet}`);
+    }
   }
 }
 
 function applyBetweenDots() {
   const active = canvas.getActiveObject();
   const pattern = document.getElementById('betweenDots')?.value;
-  if (active && active.type && active.type.includes('text') && pattern) {
+  if (active && active.type === 'i-text' && pattern) {
     active.set('text', pattern);
     canvas.renderAll();
     updateStatus('Pattern applied');
@@ -63,7 +64,7 @@ function applyBetweenDots() {
 
 function updateTextSize(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('fontSize', parseInt(value));
     canvas.renderAll();
   }
@@ -71,7 +72,7 @@ function updateTextSize(value) {
 
 function updateLineSpacing(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('lineHeight', 1 + (parseInt(value) / 50));
     canvas.renderAll();
   }
@@ -79,7 +80,7 @@ function updateLineSpacing(value) {
 
 function updateCharSpacing(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('charSpacing', parseInt(value));
     canvas.renderAll();
   }
@@ -87,7 +88,7 @@ function updateCharSpacing(value) {
 
 function updateTextColor(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('fill', value);
     canvas.renderAll();
   }
@@ -95,7 +96,7 @@ function updateTextColor(value) {
 
 function updateTextOpacity(value) {
   const active = canvas.getActiveObject();
-  if (active && active.type && active.type.includes('text')) {
+  if (active && active.type === 'i-text') {
     active.set('opacity', parseFloat(value));
     canvas.renderAll();
   }
@@ -115,11 +116,11 @@ function uploadCustomFont() {
       fontFace.load().then((font) => {
         document.fonts.add(font);
         const active = canvas.getActiveObject();
-        if (active && active.type && active.type.includes('text')) {
+        if (active && active.type === 'i-text') {
           active.set('fontFamily', fontName);
           canvas.renderAll();
         }
-        updateStatus(`Font "${fontName}" loaded and applied`);
+        updateStatus(`Font "${fontName}" loaded`);
       }).catch(() => updateStatus('Font load failed'));
     };
     reader.readAsArrayBuffer(file);

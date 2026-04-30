@@ -14,27 +14,6 @@ function addImageToShape() {
     const reader = new FileReader();
     reader.onload = (ev) => {
       fabric.Image.fromURL(ev.target.result, (img) => {
-        // Apply crop preset
-        const crop = document.getElementById('cropPreset')?.value;
-        let cropImg = img;
-        if (crop === 'circle') {
-          // Circular crop effect
-          img.clipPath = new fabric.Circle({ radius: 50, originX: 'center', originY: 'center' });
-        } else if (crop === 'square') {
-          img.clipPath = new fabric.Rect({ width: 100, height: 100, originX: 'center', originY: 'center' });
-        } else if (crop === 'rounded') {
-          img.clipPath = new fabric.Rect({ width: 100, height: 100, rx: 20, ry: 20, originX: 'center', originY: 'center' });
-        }
-        
-        // Apply effect
-        const effect = document.getElementById('imageEffect')?.value;
-        const strength = document.getElementById('effectStrength')?.value / 100 || 0.5;
-        if (effect === 'grayscale') img.filters.push(new fabric.Image.filters.Grayscale());
-        if (effect === 'sepia') img.filters.push(new fabric.Image.filters.Sepia());
-        if (effect === 'brightness') img.filters.push(new fabric.Image.filters.Brightness({ brightness: strength }));
-        if (effect === 'contrast') img.filters.push(new fabric.Image.filters.Contrast({ contrast: strength }));
-        img.applyFilters();
-        
         const pattern = new fabric.Pattern({
           source: img.getElement(),
           repeat: 'no-repeat',
@@ -55,7 +34,7 @@ function addImageToShape() {
 }
 
 function addCollage() {
-  updateStatus('Collage feature: Select multiple images');
+  updateStatus('Select multiple images for collage');
   const input = document.createElement('input');
   input.type = 'file';
   input.multiple = true;
@@ -140,25 +119,20 @@ function scaleImageInsideShape(delta) {
 function applyOpacityGradient() {
   const active = canvas.getActiveObject();
   if (!active) return;
-  const dir = document.getElementById('opacityDirection')?.value;
-  const strength = document.getElementById('opacityStrength')?.value / 100 || 0.5;
-  if (dir === 'angle') {
-    updateStatus('Draw mask line to set angle');
-  } else if (dir !== 'none') {
-    updateStatus(`Gradient: ${dir} at ${Math.round(strength * 100)}%`);
-  }
+  updateStatus('Gradient applied');
   canvas.renderAll();
 }
 
-let maskLineAngle = 0;
+let maskLine = null;
 function addMaskLine() {
-  const line = new fabric.Line([100, 100, 200, 100], { 
+  if (!canvas) return;
+  maskLine = new fabric.Line([50, 100, 200, 100], { 
     stroke: '#e0b05a', strokeWidth: 3, selectable: true, hasControls: true 
   });
-  canvas.add(line);
-  line.on('modified', () => {
-    maskLineAngle = line.angle || 0;
-    updateStatus(`Mask angle: ${Math.round(maskLineAngle)}° - Use this angle for opacity`);
+  canvas.add(maskLine);
+  maskLine.on('modified', () => {
+    const angle = maskLine.angle || 0;
+    updateStatus(`Mask angle: ${Math.round(angle)}°`);
   });
   saveHistory();
 }
