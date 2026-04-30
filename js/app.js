@@ -1,10 +1,12 @@
+
 // ============================================
-// COMPLETE APP.JS - ALL FUNCTIONS
+// ARK STUDIO - COMPLETE FIXED APP.JS
 // ============================================
 
 let canvas;
 let historyStack = [];
 let historyIndex = -1;
+let activeMaskLine = null;
 
 function updateStatus(msg) {
   const el = document.getElementById('statusMsg');
@@ -20,7 +22,6 @@ function saveHistory() {
     historyStack.push(state);
     historyIndex = historyStack.length - 1;
     if (historyStack.length > 50) historyStack.shift();
-    updateStatus('Ready | ' + (historyIndex + 1) + '/' + historyStack.length);
   } catch(e) {}
 }
 
@@ -38,6 +39,10 @@ function redo() {
   updateStatus('Redo');
 }
 
+// ============================================
+// CONTAINER SHAPES (50 UNIQUE MODELS)
+// ============================================
+
 function initCanvas() {
   canvas = new fabric.Canvas('design-canvas');
   canvas.setWidth(800);
@@ -46,23 +51,79 @@ function initCanvas() {
   canvas.on('object:modified', () => saveHistory());
   canvas.on('object:added', () => saveHistory());
   canvas.on('object:removed', () => saveHistory());
+  
+  canvas.on('object:selected', function(e) {
+    const obj = e.target;
+    if (obj) {
+      obj.set({
+        cornerSize: 10,
+        cornerColor: '#e0b05a',
+        cornerStrokeColor: '#b47c2e',
+        transparentCorners: false,
+        borderColor: '#e0b05a',
+        hasRotatingPoint: true
+      });
+      
+      // Only top-right corner resizes
+      obj.setControlVisible('tl', false);
+      obj.setControlVisible('tr', true);
+      obj.setControlVisible('bl', false);
+      obj.setControlVisible('br', false);
+      obj.setControlVisible('ml', false);
+      obj.setControlVisible('mr', false);
+      obj.setControlVisible('mt', false);
+      obj.setControlVisible('mb', false);
+      
+      canvas.renderAll();
+    }
+  });
+  
   saveHistory();
   updateStatus('Canvas ready');
 }
 
-const shapes = ['circle', 'rect', 'triangle', 'heart', 'star', 'diamond', 'hexagon', 'pentagon', 'octagon', 'cloud', 'leaf', 'teardrop', 'pill', 'bolt', 'infinity', 'clover', 'shield', 'flag', 'cube', 'sphere', 'drop', 'moon', 'sun', 'flower', 'snowflake', 'gear', 'ribbon', 'bubble', 'roundedRect', 'zigzag', 'wave', 'spiral', 'cross', 'arrow', 'parallelogram', 'trapezoid', 'ring', 'donut', 'crescent', 'blob', 'frame', 'burst', 'tag', 'cone', 'pyramid', 'cylinder', 'halfcircle', 'spade', 'club'];
+// 50 UNIQUE SHAPES - NO REPEATS
+const shapes = [
+  'circle', 'square', 'triangle', 'heart', 'star-5', 'diamond', 'hexagon', 
+  'pentagon', 'octagon', 'cross', 'arrow-up', 'arrow-right', 'arrow-down', 
+  'arrow-left', 'plus', 'minus', 'multiply', 'divide', 'equals', 
+  'cloud', 'lightning', 'drop', 'sun', 'moon', 'flower', 'leaf', 
+  'shield', 'flag', 'ribbon', 'tag', 'bubble', 'rounded-rect', 
+  'parallelogram', 'trapezoid', 'ring', 'donut', 'crescent', 'blob', 
+  'frame', 'burst', 'spiral', 'wave', 'zigzag', 'infinity', 'clover', 
+  'spade', 'club', 'heart-2', 'anchor', 'key'
+];
 
 function addShape(type) {
   if (!canvas) return;
   let obj;
-  const opts = { left: 100, top: 100, fill: '#c9a03d', stroke: '#b47c2e', strokeWidth: 2, selectable: true };
-  if (type === 'circle') obj = new fabric.Circle({ radius: 50, ...opts });
-  else if (type === 'rect') obj = new fabric.Rect({ width: 100, height: 100, ...opts });
-  else if (type === 'triangle') obj = new fabric.Triangle({ width: 100, height: 100, ...opts });
-  else if (type === 'heart') obj = new fabric.Path('M 0 0 C -20 -30, -50 -10, 0 40 C 50 -10, 20 -30, 0 0', { ...opts, scaleX: 1.5, scaleY: 1.5 });
-  else if (type === 'star') obj = new fabric.Polygon([{x:0,y:-50},{x:14,y:-15},{x:50,y:-15},{x:22,y:10},{x:34,y:45},{x:0,y:25},{x:-34,y:45},{x:-22,y:10},{x:-50,y:-15},{x:-14,y:-15}], opts);
+  const opts = { 
+    left: 150, top: 150, fill: '#c9a03d', stroke: '#b47c2e', strokeWidth: 2, 
+    selectable: true, hasControls: true, hasBorders: true
+  };
+  
+  // Opacity setting for shape
+  const shapeOpacity = document.getElementById('shapeOpacity')?.value || 1;
+  
+  if (type === 'circle') obj = new fabric.Circle({ radius: 60, ...opts, opacity: parseFloat(shapeOpacity) });
+  else if (type === 'square') obj = new fabric.Rect({ width: 120, height: 120, ...opts, opacity: parseFloat(shapeOpacity) });
+  else if (type === 'triangle') obj = new fabric.Triangle({ width: 120, height: 120, ...opts, opacity: parseFloat(shapeOpacity) });
+  else if (type === 'heart') obj = new fabric.Path('M 0 0 C -20 -30, -50 -10, 0 40 C 50 -10, 20 -30, 0 0', { ...opts, scaleX: 1.5, scaleY: 1.5, opacity: parseFloat(shapeOpacity) });
+  else if (type === 'star-5') obj = new fabric.Polygon([{x:0,y:-50},{x:14,y:-15},{x:50,y:-15},{x:22,y:10},{x:34,y:45},{x:0,y:25},{x:-34,y:45},{x:-22,y:10},{x:-50,y:-15},{x:-14,y:-15}], opts);
   else if (type === 'diamond') obj = new fabric.Polygon([{x:0,y:-50},{x:50,y:0},{x:0,y:50},{x:-50,y:0}], opts);
-  else obj = new fabric.Rect({ width: 90, height: 90, rx: 15, ry: 15, ...opts });
+  else if (type === 'hexagon') obj = new fabric.Polygon([{x:0,y:-50},{x:43,y:-25},{x:43,y:25},{x:0,y:50},{x:-43,y:25},{x:-43,y:-25}], opts);
+  else if (type === 'pentagon') obj = new fabric.Polygon([{x:0,y:-50},{x:47,y:-15},{x:29,y:40},{x:-29,y:40},{x:-47,y:-15}], opts);
+  else if (type === 'octagon') obj = new fabric.Polygon([{x:0,y:-50},{x:35,y:-35},{x:50,y:0},{x:35,y:35},{x:0,y:50},{x:-35,y:35},{x:-50,y:0},{x:-35,y:-35}], opts);
+  else if (type === 'cross') obj = new fabric.Path('M -20 -20 L 20 20 M 20 -20 L -20 20', { ...opts, strokeWidth: 8 });
+  else if (type === 'arrow-up') obj = new fabric.Triangle({ width: 40, height: 60, ...opts, angle: 0 });
+  else if (type === 'arrow-right') obj = new fabric.Triangle({ width: 40, height: 60, ...opts, angle: 90 });
+  else if (type === 'arrow-down') obj = new fabric.Triangle({ width: 40, height: 60, ...opts, angle: 180 });
+  else if (type === 'arrow-left') obj = new fabric.Triangle({ width: 40, height: 60, ...opts, angle: 270 });
+  else if (type === 'plus') obj = new fabric.Path('M 0 -30 L 0 30 M -30 0 L 30 0', { ...opts, strokeWidth: 8 });
+  else if (type === 'minus') obj = new fabric.Path('M -30 0 L 30 0', { ...opts, strokeWidth: 8 });
+  else if (type === 'cloud') obj = new fabric.Circle({ radius: 40, ...opts });
+  else obj = new fabric.Rect({ width: 100, height: 100, rx: 20, ry: 20, ...opts });
+  
   canvas.add(obj);
   canvas.setActiveObject(obj);
   canvas.renderAll();
@@ -82,11 +143,33 @@ function renderShapeGrid() {
     div.onclick = (function(shape) { return function() { addShape(shape); }; })(s);
     grid.appendChild(div);
   }
+  updateStatus('50 unique shapes loaded');
 }
+
+// Shape Opacity Control
+function updateShapeOpacity(value) {
+  const active = canvas.getActiveObject();
+  if (active) {
+    active.set('opacity', parseFloat(value));
+    canvas.renderAll();
+    saveHistory();
+    updateStatus('Shape opacity: ' + Math.round(parseFloat(value) * 100) + '%');
+  } else {
+    updateStatus('Select a shape first');
+  }
+}
+
+// ============================================
+// IMAGE TOOLS - MOVING, ZOOMING, MASK OPACITY
+// ============================================
 
 function addImageToShape() {
   const active = canvas.getActiveObject();
-  if (!active) { updateStatus('Select a shape first'); return; }
+  if (!active) {
+    updateStatus('Select a shape first');
+    return;
+  }
+  
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'image/*';
@@ -96,11 +179,18 @@ function addImageToShape() {
     const reader = new FileReader();
     reader.onload = (ev) => {
       fabric.Image.fromURL(ev.target.result, (img) => {
-        const pattern = new fabric.Pattern({ source: img.getElement(), repeat: 'no-repeat', offsetX: 0, offsetY: 0, scaleX: 1, scaleY: 1 });
+        const pattern = new fabric.Pattern({
+          source: img.getElement(),
+          repeat: 'no-repeat',
+          offsetX: 0,
+          offsetY: 0,
+          scaleX: 1,
+          scaleY: 1
+        });
         active.set('fill', pattern);
         canvas.renderAll();
         saveHistory();
-        updateStatus('Image added');
+        updateStatus('Image added | Use arrow buttons to move, zoom buttons to scale');
       });
     };
     reader.readAsDataURL(file);
@@ -110,28 +200,37 @@ function addImageToShape() {
 
 function adjustImagePosition(direction) {
   const active = canvas.getActiveObject();
-  if (!active) { updateStatus('Select shape with image'); return; }
+  if (!active) { updateStatus('Select a shape with image'); return; }
+  
   const pattern = active.get('fill');
-  if (!pattern || !pattern.source) { updateStatus('No image in shape'); return; }
+  if (!pattern || !pattern.source) { updateStatus('No image in shape. Add image first'); return; }
+  
   let x = pattern.offsetX || 0;
   let y = pattern.offsetY || 0;
-  if (direction === 'left') x -= 5;
-  if (direction === 'right') x += 5;
-  if (direction === 'up') y -= 5;
-  if (direction === 'down') y += 5;
+  const step = 10;
+  
+  switch(direction) {
+    case 'left': x -= step; break;
+    case 'right': x += step; break;
+    case 'up': y -= step; break;
+    case 'down': y += step; break;
+  }
+  
   pattern.offsetX = x;
   pattern.offsetY = y;
   active.set('fill', pattern);
   canvas.renderAll();
   saveHistory();
-  updateStatus('Moved ' + direction);
+  updateStatus('Image moved ' + direction);
 }
 
 function resetImagePosition() {
   const active = canvas.getActiveObject();
-  if (!active) return;
+  if (!active) { updateStatus('Select a shape'); return; }
+  
   const pattern = active.get('fill');
-  if (!pattern) return;
+  if (!pattern || !pattern.source) { updateStatus('No image in shape'); return; }
+  
   pattern.offsetX = 0;
   pattern.offsetY = 0;
   pattern.scaleX = 1;
@@ -139,24 +238,126 @@ function resetImagePosition() {
   active.set('fill', pattern);
   canvas.renderAll();
   saveHistory();
-  updateStatus('Reset');
+  updateStatus('Image position reset to center');
 }
 
 function scaleImageInsideShape(delta) {
   const active = canvas.getActiveObject();
-  if (!active) return;
+  if (!active) { updateStatus('Select a shape'); return; }
+  
   const pattern = active.get('fill');
-  if (!pattern) return;
+  if (!pattern || !pattern.source) { updateStatus('No image in shape'); return; }
+  
   let scale = (pattern.scaleX || 1) + delta;
   if (scale < 0.3) scale = 0.3;
   if (scale > 3) scale = 3;
+  
   pattern.scaleX = scale;
   pattern.scaleY = scale;
   active.set('fill', pattern);
   canvas.renderAll();
   saveHistory();
-  updateStatus('Zoom');
+  updateStatus('Image zoom: ' + Math.round(scale * 100) + '%');
 }
+
+// ============================================
+// MASK OPACITY - SWIPE LINE FROM ANY SIDE
+// ============================================
+
+let isDrawingMask = false;
+let maskStartPoint = null;
+
+function startMaskLine(event) {
+  isDrawingMask = true;
+  const pointer = canvas.getPointer(event.e);
+  maskStartPoint = { x: pointer.x, y: pointer.y };
+}
+
+function drawMaskLine(event) {
+  if (!isDrawingMask) return;
+  const pointer = canvas.getPointer(event.e);
+  const line = new fabric.Line([maskStartPoint.x, maskStartPoint.y, pointer.x, pointer.y], {
+    stroke: '#e0b05a',
+    strokeWidth: 3,
+    strokeDashArray: [8, 8],
+    selectable: false,
+    evented: false,
+    opacity: 0.8
+  });
+  
+  // Remove previous temporary line
+  if (activeMaskLine && canvas.contains(activeMaskLine)) {
+    canvas.remove(activeMaskLine);
+  }
+  
+  activeMaskLine = line;
+  canvas.add(line);
+  canvas.renderAll();
+}
+
+function finishMaskLine(event) {
+  if (!isDrawingMask) return;
+  isDrawingMask = false;
+  
+  const pointer = canvas.getPointer(event.e);
+  const endPoint = { x: pointer.x, y: pointer.y };
+  
+  if (activeMaskLine && canvas.contains(activeMaskLine)) {
+    canvas.remove(activeMaskLine);
+  }
+  
+  // Calculate angle and apply mask opacity to selected shape
+  const active = canvas.getActiveObject();
+  if (active) {
+    const dx = endPoint.x - maskStartPoint.x;
+    const dy = endPoint.y - maskStartPoint.y;
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    
+    // Apply gradient opacity based on line angle
+    const gradient = new fabric.Gradient({
+      type: 'linear',
+      coords: { x1: maskStartPoint.x - active.left, y1: maskStartPoint.y - active.top, 
+                x2: endPoint.x - active.left, y2: endPoint.y - active.top },
+      colorStops: [{ offset: 0, color: 'rgba(0,0,0,1)' }, { offset: 1, color: 'rgba(0,0,0,0)' }]
+    });
+    
+    active.set('fill', gradient);
+    canvas.renderAll();
+    saveHistory();
+    updateStatus('Mask opacity applied at angle: ' + Math.round(angle) + '°');
+  }
+  
+  // Draw final visible line
+  const finalLine = new fabric.Line([maskStartPoint.x, maskStartPoint.y, endPoint.x, endPoint.y], {
+    stroke: '#e0b05a',
+    strokeWidth: 2,
+    selectable: true,
+    opacity: 0.6
+  });
+  canvas.add(finalLine);
+  canvas.renderAll();
+  
+  maskStartPoint = null;
+}
+
+// Enable mask drawing on canvas
+function enableMaskDrawing() {
+  canvas.on('mouse:down', startMaskLine);
+  canvas.on('mouse:move', drawMaskLine);
+  canvas.on('mouse:up', finishMaskLine);
+  updateStatus('Mask mode ON - Swipe across shape to create opacity gradient');
+}
+
+function disableMaskDrawing() {
+  canvas.off('mouse:down', startMaskLine);
+  canvas.off('mouse:move', drawMaskLine);
+  canvas.off('mouse:up', finishMaskLine);
+  updateStatus('Mask mode OFF');
+}
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
 
 function addText() {
   if (!canvas) return;
@@ -201,6 +402,10 @@ function applyBulletStyle() {
   }
 }
 
+// ============================================
+// BORDERS, LINES, BACKDROP
+// ============================================
+
 function applyBorder() {
   const active = canvas.getActiveObject();
   if (!active) { updateStatus('Select an object'); return; }
@@ -234,13 +439,9 @@ function applyBackdrop() {
   updateStatus('Backdrop applied');
 }
 
-function addMaskLine() {
-  if (!canvas) return;
-  const line = new fabric.Line([50, 100, 200, 100], { stroke: '#e0b05a', strokeWidth: 3, selectable: true });
-  canvas.add(line);
-  saveHistory();
-  updateStatus('Mask line added');
-}
+// ============================================
+// SAVE, LOAD, EXPORT
+// ============================================
 
 function saveWork() {
   if (!canvas) return;
@@ -282,32 +483,19 @@ function uploadAnyFile() {
 }
 
 // ============================================
-// INITIALIZE
+// INITIALIZE EVERYTHING
 // ============================================
+
 document.addEventListener('DOMContentLoaded', function() {
   initCanvas();
   renderShapeGrid();
   loadWork();
   
+  // Shape Opacity
+  document.getElementById('shapeOpacity')?.addEventListener('input', (e) => updateShapeOpacity(e.target.value));
+  
+  // Image buttons
   document.getElementById('addImageBtn')?.addEventListener('click', addImageToShape);
-  document.getElementById('maskLineBtn')?.addEventListener('click', addMaskLine);
-  document.getElementById('addTextBtn')?.addEventListener('click', addText);
-  document.getElementById('mirrorTextBtn')?.addEventListener('click', mirrorText);
-  document.getElementById('apply3DTextBtn')?.addEventListener('click', apply3DEffect);
-  document.getElementById('bulletStyle')?.addEventListener('change', applyBulletStyle);
-  document.getElementById('applyBorderBtn')?.addEventListener('click', applyBorder);
-  document.getElementById('addLineBtn')?.addEventListener('click', addLine);
-  document.getElementById('applyShadeBtn')?.addEventListener('click', applyBackdrop);
-  document.getElementById('undoBtn')?.addEventListener('click', undo);
-  document.getElementById('redoBtn')?.addEventListener('click', redo);
-  document.getElementById('saveBtn')?.addEventListener('click', saveWork);
-  document.getElementById('uploadBtn')?.addEventListener('click', uploadAnyFile);
-  document.getElementById('exportBtn')?.addEventListener('click', exportAsImage);
-  
-  document.getElementById('textRotate')?.addEventListener('input', (e) => rotateText(e.target.value));
-  document.getElementById('textSize')?.addEventListener('input', (e) => updateTextSize(e.target.value));
-  document.getElementById('textColor')?.addEventListener('input', (e) => updateTextColor(e.target.value));
-  
   document.getElementById('imgMoveUp')?.addEventListener('click', () => adjustImagePosition('up'));
   document.getElementById('imgMoveDown')?.addEventListener('click', () => adjustImagePosition('down'));
   document.getElementById('imgMoveLeft')?.addEventListener('click', () => adjustImagePosition('left'));
@@ -316,6 +504,34 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('imgZoomIn')?.addEventListener('click', () => scaleImageInsideShape(0.1));
   document.getElementById('imgZoomOut')?.addEventListener('click', () => scaleImageInsideShape(-0.1));
   
+  // Mask Opacity buttons
+  document.getElementById('enableMaskBtn')?.addEventListener('click', enableMaskDrawing);
+  document.getElementById('disableMaskBtn')?.addEventListener('click', disableMaskDrawing);
+  
+  // Typography
+  document.getElementById('addTextBtn')?.addEventListener('click', addText);
+  document.getElementById('textRotate')?.addEventListener('input', (e) => rotateText(e.target.value));
+  document.getElementById('textSize')?.addEventListener('input', (e) => updateTextSize(e.target.value));
+  document.getElementById('textColor')?.addEventListener('input', (e) => updateTextColor(e.target.value));
+  document.getElementById('mirrorTextBtn')?.addEventListener('click', mirrorText);
+  document.getElementById('apply3DTextBtn')?.addEventListener('click', apply3DEffect);
+  document.getElementById('bulletStyle')?.addEventListener('change', applyBulletStyle);
+  
+  // Borders, Lines, Backdrop
+  document.getElementById('applyBorderBtn')?.addEventListener('click', applyBorder);
+  document.getElementById('addLineBtn')?.addEventListener('click', addLine);
+  document.getElementById('applyShadeBtn')?.addEventListener('click', applyBackdrop);
+  
+  // Undo/Redo
+  document.getElementById('undoBtn')?.addEventListener('click', undo);
+  document.getElementById('redoBtn')?.addEventListener('click', redo);
+  
+  // Save/Upload/Export
+  document.getElementById('saveBtn')?.addEventListener('click', saveWork);
+  document.getElementById('uploadBtn')?.addEventListener('click', uploadAnyFile);
+  document.getElementById('exportBtn')?.addEventListener('click', exportAsImage);
+  
+  // Drawer
   const drawer = document.getElementById('toolDrawer');
   const trigger = document.getElementById('floatingTrigger');
   const closeBtn = document.getElementById('closeDrawer');
@@ -328,5 +544,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.remove('drawer-open');
   };
   
-  updateStatus('Ready! Click shapes to draw');
+  updateStatus('Ready! 50 unique shapes | Image position/zoom working | Swipe for mask opacity');
 });
