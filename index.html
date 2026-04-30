@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <title>ARK STUDIO · Design Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <div class="top-bar">
+    <div class="logo"><h1><i class="fas fa-crown"></i> ARK STUDIO</h1></div>
+    <div class="action-buttons">
+      <button id="saveBtn"><i class="fas fa-save"></i> Save</button>
+      <button id="uploadBtn"><i class="fas fa-upload"></i> Upload</button>
+      <button id="exportBtn"><i class="fas fa-download"></i> Export</button>
+    </div>
+  </div>
+
+  <div class="canvas-area">
+    <div id="canvas-container">
+      <canvas id="design-canvas" width="800" height="1000"></canvas>
+    </div>
+  </div>
+
+  <button class="floating-icon" id="floatingTrigger"><i class="fas fa-magic"></i></button>
+
+  <div class="tool-drawer" id="toolDrawer">
+    <div class="drawer-header">
+      <h3><i class="fas fa-sliders-h"></i> Design Studio</h3>
+      <button class="close-drawer" id="closeDrawer">✕</button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 1: CONTAINER SHAPES (50 UNIQUE) -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-shapes"></i> 1. CONTAINER SHAPES (50 UNIQUE)</div>
+      <div class="shape-grid" id="shapeGrid"></div>
+      
+      <div class="control-group" style="margin-top: 12px;">
+        <label><i class="fas fa-adjust"></i> Shape Opacity</label>
+        <input type="range" id="shapeOpacity" min="0" max="1" step="0.01" value="1">
+      </div>
+      
+      <small style="color:#777;font-size:10px;display:block;text-align:center;margin-top:8px;">
+        ⚡ Drag top-right corner to resize | Other corners stretch freely
+      </small>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 2: IMAGE TOOLS (MOVE, ZOOM, MASK OPACITY) -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-image"></i> 2. FILL WITH IMAGE</div>
+      
+      <button id="addImageBtn" class="btn-full"><i class="fas fa-file-image"></i> Add Image to Shape</button>
+      
+      <div class="control-group" style="margin-top: 12px;">
+        <label><i class="fas fa-arrows-alt"></i> Position Image Inside Shape</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;">
+          <div></div>
+          <button id="imgMoveUp" style="padding: 10px;"><i class="fas fa-arrow-up"></i> Up</button>
+          <div></div>
+          <button id="imgMoveLeft" style="padding: 10px;"><i class="fas fa-arrow-left"></i> Left</button>
+          <button id="imgReset" style="padding: 10px; background: #e0b05a; color: #0a0a0c;"><i class="fas fa-sync-alt"></i> Reset</button>
+          <button id="imgMoveRight" style="padding: 10px;">Right <i class="fas fa-arrow-right"></i></button>
+          <div></div>
+          <button id="imgMoveDown" style="padding: 10px;"><i class="fas fa-arrow-down"></i> Down</button>
+          <div></div>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button id="imgZoomOut" style="flex:1;"><i class="fas fa-search-minus"></i> Zoom Out</button>
+          <button id="imgZoomIn" style="flex:1;">Zoom In <i class="fas fa-search-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="control-group" style="margin-top: 12px; border-top: 1px solid #252530; padding-top: 12px;">
+        <label><i class="fas fa-tint"></i> Opacity Gradient</label>
+        <select id="opacityDirection">
+          <option value="none">None</option>
+          <option value="left">Left → Right</option>
+          <option value="right">Right → Left</option>
+          <option value="top">Top → Bottom</option>
+          <option value="bottom">Bottom → Top</option>
+        </select>
+        <label>Strength</label>
+        <input type="range" id="opacityStrength" min="0" max="100" value="50">
+      </div>
+
+      <!-- MASK OPACITY WITH SWIPE LINE -->
+      <div class="control-group" style="margin-top: 12px;">
+        <label><i class="fas fa-draw-polygon"></i> Mask Opacity (Swipe Line)</label>
+        <div style="display: flex; gap: 8px;">
+          <button id="enableMaskBtn" class="btn-gold" style="flex:1"><i class="fas fa-pen"></i> Start Mask Mode</button>
+          <button id="disableMaskBtn" style="flex:1"><i class="fas fa-stop"></i> Stop Mask</button>
+        </div>
+        <small style="color:#aaa;font-size:10px;display:block;margin-top:6px;">
+          👆 Click "Start Mask Mode" then swipe across shape to create opacity gradient
+        </small>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 3: TYPOGRAPHY -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-font"></i> 3. TYPOGRAPHY</div>
+      
+      <button id="addTextBtn" class="btn-full"><i class="fas fa-plus-circle"></i> Add Text</button>
+      
+      <div class="control-group">
+        <label>Rotate 360°</label>
+        <input type="range" id="textRotate" min="0" max="360" value="0">
+      </div>
+      
+      <div class="control-group">
+        <label>Font Size (px)</label>
+        <input type="range" id="textSize" min="10" max="100" value="32">
+      </div>
+      
+      <div class="control-group">
+        <label>Text Color</label>
+        <input type="color" id="textColor" value="#2c2c2c">
+      </div>
+      
+      <div class="control-group">
+        <div style="display: flex; gap: 8px;">
+          <button id="mirrorTextBtn" style="flex:1;">🪞 Mirror</button>
+          <button id="apply3DTextBtn" class="btn-gold" style="flex:1;">✨ 3D Effect</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label>Bullet Point Style</label>
+        <select id="bulletStyle">
+          <option value="•">• Dot</option>
+          <option value="★">★ Star</option>
+          <option value="◆">◆ Diamond</option>
+          <option value="●">● Circle</option>
+          <option value="▪">▪ Square</option>
+          <option value="♥">♥ Heart</option>
+          <option value="♠">♠ Spade</option>
+          <option value="♣">♣ Club</option>
+        </select>
+        <button id="applyBulletBtn" style="margin-top:5px; width:100%;">Apply Bullet to Text</button>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 4: BACKDROP SHADES -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-palette"></i> 4. BACKDROP SHADES</div>
+      
+      <div class="control-group">
+        <label>Preset Shades</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <div class="color-swatch" style="background:#1a1a2e; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#1a1a2e'; applyBackdrop();"></div>
+          <div class="color-swatch" style="background:#2e1a1a; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#2e1a1a'; applyBackdrop();"></div>
+          <div class="color-swatch" style="background:#1a2e1a; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#1a2e1a'; applyBackdrop();"></div>
+          <div class="color-swatch" style="background:#2e2e1a; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#2e2e1a'; applyBackdrop();"></div>
+          <div class="color-swatch" style="background:#1a2e2e; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#1a2e2e'; applyBackdrop();"></div>
+          <div class="color-swatch" style="background:#2e1a2e; width:40px; height:40px; border-radius:8px; cursor:pointer;" onclick="document.getElementById('shadeColor').value='#2e1a2e'; applyBackdrop();"></div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label>Custom Color</label>
+        <input type="color" id="shadeColor" value="#1a1a2e">
+      </div>
+      
+      <div class="control-group">
+        <label>Opacity</label>
+        <input type="range" id="shadeOpacity" min="0" max="1" step="0.01" value="0.3">
+      </div>
+      
+      <button id="applyShadeBtn" class="btn-full">Apply Backdrop</button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 5: BORDERS -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-border-all"></i> 5. BORDERS</div>
+      
+      <div class="control-group">
+        <label>Strength (px)</label>
+        <input type="range" id="borderWidth" min="0" max="20" value="2">
+      </div>
+      
+      <div class="control-group">
+        <label>Color</label>
+        <input type="color" id="borderColor" value="#e0b05a">
+      </div>
+      
+      <div class="control-group">
+        <label>Border Type</label>
+        <select id="borderType">
+          <option value="solid">Solid</option>
+          <option value="dotted">Dotted</option>
+          <option value="dashed">Dashed</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Opacity</label>
+        <input type="range" id="borderOpacity" min="0" max="1" step="0.01" value="1">
+      </div>
+      
+      <button id="applyBorderBtn" class="btn-full">Apply Border</button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STEP 6: LINES -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="step-title"><i class="fas fa-grip-lines"></i> 6. LINES</div>
+      
+      <button id="addLineBtn" class="btn-gold btn-full"><i class="fas fa-plus"></i> Add Line</button>
+      
+      <div class="control-group">
+        <label>Line Width</label>
+        <input type="range" id="lineWidth" min="1" max="20" value="3">
+      </div>
+      
+      <div class="control-group">
+        <label>Line Color</label>
+        <input type="color" id="lineColor" value="#e0b05a">
+      </div>
+      
+      <div class="control-group">
+        <label>Line Type</label>
+        <select id="lineType">
+          <option value="solid">Solid</option>
+          <option value="dot">Dot Pattern</option>
+          <option value="dash">Dash</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>Opacity</label>
+        <input type="range" id="lineOpacity" min="0" max="1" step="0.01" value="1">
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- UNDO / REDO -->
+    <!-- ============================================ -->
+    <div class="step-section">
+      <div class="undo-redo-group">
+        <button id="undoBtn" class="btn-half"><i class="fas fa-undo"></i> Undo</button>
+        <button id="redoBtn" class="btn-half"><i class="fas fa-redo"></i> Redo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="status" id="statusMsg">Ready | 50 unique shapes | Tap magic wand to open tools</div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
