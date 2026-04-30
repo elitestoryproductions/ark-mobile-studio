@@ -11,5 +11,6 @@ Independent_Modules:
   - package-lock.json [INDEPENDENT]
   - README.md [INDEPENDENT]
   - sw.js [INDEPENDENT]
+  - crash_log.txt [INDEPENDENT]
 
 STATUS: SYNCED TO MCP

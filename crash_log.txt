@@ -1,0 +1,247 @@
+2026-04-30T10:47:56.2995650Z Current runner version: '2.334.0'
+2026-04-30T10:47:56.3031799Z ##[group]Runner Image Provisioner
+2026-04-30T10:47:56.3033007Z Hosted Compute Agent
+2026-04-30T10:47:56.3033945Z Version: 20260213.493
+2026-04-30T10:47:56.3034890Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-30T10:47:56.3035856Z Build Date: 2026-02-13T00:28:41Z
+2026-04-30T10:47:56.3036896Z Worker ID: {e3f4fb45-729e-4cf5-8b81-dae718a6aed2}
+2026-04-30T10:47:56.3037915Z Azure Region: northcentralus
+2026-04-30T10:47:56.3059507Z ##[endgroup]
+2026-04-30T10:47:56.3062188Z ##[group]Operating System
+2026-04-30T10:47:56.3063179Z Ubuntu
+2026-04-30T10:47:56.3063980Z 24.04.4
+2026-04-30T10:47:56.3064674Z LTS
+2026-04-30T10:47:56.3065568Z ##[endgroup]
+2026-04-30T10:47:56.3066391Z ##[group]Runner Image
+2026-04-30T10:47:56.3067370Z Image: ubuntu-24.04
+2026-04-30T10:47:56.3068311Z Version: 20260413.86.1
+2026-04-30T10:47:56.3070852Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-30T10:47:56.3073314Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+2026-04-30T10:47:56.3074765Z ##[endgroup]
+2026-04-30T10:47:56.3076425Z ##[group]GITHUB_TOKEN Permissions
+2026-04-30T10:47:56.3094104Z Contents: read
+2026-04-30T10:47:56.3095129Z Metadata: read
+2026-04-30T10:47:56.3096080Z Packages: read
+2026-04-30T10:47:56.3096886Z ##[endgroup]
+2026-04-30T10:47:56.3100285Z Secret source: Actions
+2026-04-30T10:47:56.3101680Z Prepare workflow directory
+2026-04-30T10:47:56.4435461Z Prepare all required actions
+2026-04-30T10:47:56.4491459Z Getting action download info
+2026-04-30T10:47:56.7798249Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-04-30T10:47:57.0741114Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-04-30T10:47:57.1685224Z Download action repository 'peaceiris/actions-gh-pages@v3' (SHA:373f7f263a76c20808c831209c920827a82a2847)
+2026-04-30T10:47:57.7557900Z Complete job name: build
+2026-04-30T10:47:57.8297473Z ##[group]Run actions/checkout@v4
+2026-04-30T10:47:57.8298350Z with:
+2026-04-30T10:47:57.8299256Z   repository: elitestoryproductions/ark-mobile-studio
+2026-04-30T10:47:57.8300153Z   token: ***
+2026-04-30T10:47:57.8300573Z   ssh-strict: true
+2026-04-30T10:47:57.8300997Z   ssh-user: git
+2026-04-30T10:47:57.8301415Z   persist-credentials: true
+2026-04-30T10:47:57.8301912Z   clean: true
+2026-04-30T10:47:57.8302343Z   sparse-checkout-cone-mode: true
+2026-04-30T10:47:57.8302875Z   fetch-depth: 1
+2026-04-30T10:47:57.8303283Z   fetch-tags: false
+2026-04-30T10:47:57.8303727Z   show-progress: true
+2026-04-30T10:47:57.8304152Z   lfs: false
+2026-04-30T10:47:57.8304541Z   submodules: false
+2026-04-30T10:47:57.8304968Z   set-safe-directory: true
+2026-04-30T10:47:57.8305767Z ##[endgroup]
+2026-04-30T10:47:57.9523224Z Syncing repository: elitestoryproductions/ark-mobile-studio
+2026-04-30T10:47:57.9526582Z ##[group]Getting Git version info
+2026-04-30T10:47:57.9529324Z Working directory is '/home/runner/work/ark-mobile-studio/ark-mobile-studio'
+2026-04-30T10:47:57.9540432Z [command]/usr/bin/git version
+2026-04-30T10:47:57.9542666Z git version 2.53.0
+2026-04-30T10:47:57.9570315Z ##[endgroup]
+2026-04-30T10:47:57.9588172Z Temporarily overriding HOME='/home/runner/work/_temp/28721faf-0c10-40bf-b01d-663aa89fd8f2' before making global git config changes
+2026-04-30T10:47:57.9592033Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-30T10:47:57.9607092Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ark-mobile-studio/ark-mobile-studio
+2026-04-30T10:47:57.9648523Z Deleting the contents of '/home/runner/work/ark-mobile-studio/ark-mobile-studio'
+2026-04-30T10:47:57.9651770Z ##[group]Initializing the repository
+2026-04-30T10:47:57.9655493Z [command]/usr/bin/git init /home/runner/work/ark-mobile-studio/ark-mobile-studio
+2026-04-30T10:47:57.9754869Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-30T10:47:57.9757928Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-30T10:47:57.9760998Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-30T10:47:57.9762814Z hint: call:
+2026-04-30T10:47:57.9764032Z hint:
+2026-04-30T10:47:57.9765566Z hint: 	git config --global init.defaultBranch <name>
+2026-04-30T10:47:57.9767376Z hint:
+2026-04-30T10:47:57.9769604Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-30T10:47:57.9772455Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-30T10:47:57.9774569Z hint:
+2026-04-30T10:47:57.9776110Z hint: 	git branch -m <name>
+2026-04-30T10:47:57.9777496Z hint:
+2026-04-30T10:47:57.9779700Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-30T10:47:57.9782513Z Initialized empty Git repository in /home/runner/work/ark-mobile-studio/ark-mobile-studio/.git/
+2026-04-30T10:47:57.9788414Z [command]/usr/bin/git remote add origin https://github.com/elitestoryproductions/ark-mobile-studio
+2026-04-30T10:47:57.9801243Z ##[endgroup]
+2026-04-30T10:47:57.9803077Z ##[group]Disabling automatic garbage collection
+2026-04-30T10:47:57.9806028Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-30T10:47:57.9840800Z ##[endgroup]
+2026-04-30T10:47:57.9842647Z ##[group]Setting up auth
+2026-04-30T10:47:57.9848222Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-30T10:47:57.9883078Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-30T10:47:58.0173264Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-30T10:47:58.0211384Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-30T10:47:58.0444044Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-30T10:47:58.0477377Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-30T10:47:58.0732703Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-30T10:47:58.0778274Z ##[endgroup]
+2026-04-30T10:47:58.0780990Z ##[group]Fetching the repository
+2026-04-30T10:47:58.0790742Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +439df507327996d472759ac6a46661d3664236f1:refs/remotes/origin/main
+2026-04-30T10:47:58.4477916Z From https://github.com/elitestoryproductions/ark-mobile-studio
+2026-04-30T10:47:58.4627396Z  * [new ref]         439df507327996d472759ac6a46661d3664236f1 -> origin/main
+2026-04-30T10:47:58.4634955Z ##[endgroup]
+2026-04-30T10:47:58.4636795Z ##[group]Determining the checkout info
+2026-04-30T10:47:58.4638738Z ##[endgroup]
+2026-04-30T10:47:58.4640195Z [command]/usr/bin/git sparse-checkout disable
+2026-04-30T10:47:58.4644087Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-30T10:47:58.4648624Z ##[group]Checking out the ref
+2026-04-30T10:47:58.4651333Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-04-30T10:47:58.4687771Z Switched to a new branch 'main'
+2026-04-30T10:47:58.4690337Z branch 'main' set up to track 'origin/main'.
+2026-04-30T10:47:58.4701242Z ##[endgroup]
+2026-04-30T10:47:58.4736958Z [command]/usr/bin/git log -1 --format=%H
+2026-04-30T10:47:58.4761458Z 439df507327996d472759ac6a46661d3664236f1
+2026-04-30T10:47:58.5249975Z ##[group]Run actions/setup-node@v4
+2026-04-30T10:47:58.5251798Z with:
+2026-04-30T10:47:58.5253107Z   node-version: 20
+2026-04-30T10:47:58.5254530Z   always-auth: false
+2026-04-30T10:47:58.5256008Z   check-latest: false
+2026-04-30T10:47:58.5258261Z   token: ***
+2026-04-30T10:47:58.5259909Z ##[endgroup]
+2026-04-30T10:47:58.7242333Z Found in cache @ /opt/hostedtoolcache/node/20.20.2/x64
+2026-04-30T10:47:58.7248057Z ##[group]Environment details
+2026-04-30T10:47:59.1386159Z node: v20.20.2
+2026-04-30T10:47:59.1388301Z npm: 10.8.2
+2026-04-30T10:47:59.1391709Z yarn: 1.22.22
+2026-04-30T10:47:59.1393788Z ##[endgroup]
+2026-04-30T10:47:59.1506346Z ##[group]Run npm ci || echo "No dependencies"
+2026-04-30T10:47:59.1507643Z [36;1mnpm ci || echo "No dependencies"[0m
+2026-04-30T10:47:59.1542846Z shell: /usr/bin/bash -e {0}
+2026-04-30T10:47:59.1543770Z ##[endgroup]
+2026-04-30T10:48:00.8463795Z 
+2026-04-30T10:48:00.8485805Z up to date, audited 1 package in 2s
+2026-04-30T10:48:00.8486942Z 
+2026-04-30T10:48:00.8487514Z found 0 vulnerabilities
+2026-04-30T10:48:00.8643765Z ##[group]Run mkdir -p dist
+2026-04-30T10:48:00.8644302Z [36;1mmkdir -p dist[0m
+2026-04-30T10:48:00.8645019Z [36;1mcp -r index.html manifest.json sw.js css js lib dist/ 2>/dev/null || cp index.html dist/[0m
+2026-04-30T10:48:00.8669247Z shell: /usr/bin/bash -e {0}
+2026-04-30T10:48:00.8669506Z ##[endgroup]
+2026-04-30T10:48:00.8848426Z ##[group]Run peaceiris/actions-gh-pages@v3
+2026-04-30T10:48:00.8848950Z with:
+2026-04-30T10:48:00.8849410Z   github_token: ***
+2026-04-30T10:48:00.8849628Z   publish_dir: ./dist
+2026-04-30T10:48:00.8849851Z   publish_branch: gh-pages
+2026-04-30T10:48:00.8850094Z   allow_empty_commit: false
+2026-04-30T10:48:00.8850326Z   keep_files: false
+2026-04-30T10:48:00.8850521Z   force_orphan: false
+2026-04-30T10:48:00.8850726Z   enable_jekyll: false
+2026-04-30T10:48:00.8850931Z   disable_nojekyll: false
+2026-04-30T10:48:00.8851146Z   exclude_assets: .github
+2026-04-30T10:48:00.8851351Z ##[endgroup]
+2026-04-30T10:48:00.9513842Z [INFO] Usage https://github.com/peaceiris/actions-gh-pages#readme
+2026-04-30T10:48:00.9519541Z ##[group]Dump inputs
+2026-04-30T10:48:00.9520553Z [INFO] GithubToken: true
+2026-04-30T10:48:00.9521750Z [INFO] PublishBranch: gh-pages
+2026-04-30T10:48:00.9522749Z [INFO] PublishDir: ./dist
+2026-04-30T10:48:00.9523606Z [INFO] DestinationDir: 
+2026-04-30T10:48:00.9524562Z [INFO] ExternalRepository: 
+2026-04-30T10:48:00.9525477Z [INFO] AllowEmptyCommit: false
+2026-04-30T10:48:00.9526407Z [INFO] KeepFiles: false
+2026-04-30T10:48:00.9527268Z [INFO] ForceOrphan: false
+2026-04-30T10:48:00.9528072Z [INFO] UserName: 
+2026-04-30T10:48:00.9529151Z [INFO] UserEmail: 
+2026-04-30T10:48:00.9529898Z [INFO] CommitMessage: 
+2026-04-30T10:48:00.9530660Z [INFO] FullCommitMessage: 
+2026-04-30T10:48:00.9531463Z [INFO] TagName: 
+2026-04-30T10:48:00.9532214Z [INFO] TagMessage: 
+2026-04-30T10:48:00.9533145Z [INFO] EnableJekyll (DisableNoJekyll): false
+2026-04-30T10:48:00.9534040Z [INFO] CNAME: 
+2026-04-30T10:48:00.9534759Z [INFO] ExcludeAssets .github
+2026-04-30T10:48:00.9535339Z 
+2026-04-30T10:48:00.9536084Z ##[endgroup]
+2026-04-30T10:48:00.9537209Z ##[group]Setup auth token
+2026-04-30T10:48:00.9538081Z [INFO] setup GITHUB_TOKEN
+2026-04-30T10:48:00.9541575Z ##[endgroup]
+2026-04-30T10:48:00.9542569Z ##[group]Prepare publishing assets
+2026-04-30T10:48:00.9543998Z [INFO] ForceOrphan: false
+2026-04-30T10:48:00.9596145Z [command]/usr/bin/git clone --depth=1 --single-branch --branch gh-pages ***github.com/elitestoryproductions/ark-mobile-studio.git /home/runner/actions_github_pages_1777546080952
+2026-04-30T10:48:00.9639832Z Cloning into '/home/runner/actions_github_pages_1777546080952'...
+2026-04-30T10:48:01.3440587Z fatal: Remote branch gh-pages not found in upstream origin
+2026-04-30T10:48:01.3526418Z [INFO] first deployment, create new branch gh-pages
+2026-04-30T10:48:01.3532932Z [INFO] The process '/usr/bin/git' failed with exit code 128
+2026-04-30T10:48:01.3534941Z [INFO] chdir /home/runner/actions_github_pages_1777546080952
+2026-04-30T10:48:01.3569632Z [command]/usr/bin/git init
+2026-04-30T10:48:01.3619991Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-30T10:48:01.3633448Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-30T10:48:01.3659967Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-30T10:48:01.3661068Z hint: call:
+2026-04-30T10:48:01.3663790Z hint:
+2026-04-30T10:48:01.3679813Z hint: 	git config --global init.defaultBranch <name>
+2026-04-30T10:48:01.3685930Z hint:
+2026-04-30T10:48:01.3702174Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-30T10:48:01.3709324Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-30T10:48:01.3729492Z hint:
+2026-04-30T10:48:01.3746873Z hint: 	git branch -m <name>
+2026-04-30T10:48:01.3769569Z hint:
+2026-04-30T10:48:01.3770563Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-30T10:48:01.3773753Z Initialized empty Git repository in /home/runner/actions_github_pages_1777546080952/.git/
+2026-04-30T10:48:01.3789655Z [command]/usr/bin/git checkout --orphan gh-pages
+2026-04-30T10:48:01.3809598Z Switched to a new branch 'gh-pages'
+2026-04-30T10:48:01.3820755Z [INFO] prepare publishing assets
+2026-04-30T10:48:01.3859208Z [INFO] copy /home/runner/work/ark-mobile-studio/ark-mobile-studio/dist to /home/runner/actions_github_pages_1777546080952
+2026-04-30T10:48:01.3940213Z cp: no such file or directory: /home/runner/work/ark-mobile-studio/ark-mobile-studio/dist/.*
+2026-04-30T10:48:01.3940974Z [INFO] delete excluded assets
+2026-04-30T10:48:01.3979656Z rm: no paths given
+2026-04-30T10:48:01.4056051Z [INFO] Created /home/runner/actions_github_pages_1777546080952/.nojekyll
+2026-04-30T10:48:01.4089878Z ##[endgroup]
+2026-04-30T10:48:01.4129838Z ##[group]Setup Git config
+2026-04-30T10:48:01.4147238Z [command]/usr/bin/git remote rm origin
+2026-04-30T10:48:01.4166742Z error: No such remote: 'origin'
+2026-04-30T10:48:01.4185101Z [INFO] The process '/usr/bin/git' failed with exit code 2
+2026-04-30T10:48:01.4208717Z [command]/usr/bin/git remote add origin ***github.com/elitestoryproductions/ark-mobile-studio.git
+2026-04-30T10:48:01.4210452Z [command]/usr/bin/git add --all
+2026-04-30T10:48:01.4233442Z [command]/usr/bin/git config user.name elitestoryproductions
+2026-04-30T10:48:01.4304501Z [command]/usr/bin/git config user.email elitestoryproductions@users.noreply.github.com
+2026-04-30T10:48:01.4340463Z ##[endgroup]
+2026-04-30T10:48:01.4349922Z ##[group]Create a commit
+2026-04-30T10:48:01.4376944Z [command]/usr/bin/git commit -m deploy: 439df507327996d472759ac6a46661d3664236f1
+2026-04-30T10:48:01.4459917Z [gh-pages (root-commit) a505cda] deploy: 439df507327996d472759ac6a46661d3664236f1
+2026-04-30T10:48:01.4594434Z  13 files changed, 776 insertions(+)
+2026-04-30T10:48:01.4595360Z  create mode 100644 .nojekyll
+2026-04-30T10:48:01.4595879Z  create mode 100644 css/styles.css
+2026-04-30T10:48:01.4596360Z  create mode 100644 index.html
+2026-04-30T10:48:01.4596784Z  create mode 100644 js/app.js
+2026-04-30T10:48:01.4597292Z  create mode 100644 js/canvas-manager.js
+2026-04-30T10:48:01.4597817Z  create mode 100644 js/effects.js
+2026-04-30T10:48:01.4598323Z  create mode 100644 js/file-upload.js
+2026-04-30T10:48:01.4599100Z  create mode 100644 js/image-editor.js
+2026-04-30T10:48:01.4599636Z  create mode 100644 js/storage.js
+2026-04-30T10:48:01.4600126Z  create mode 100644 js/typography.js
+2026-04-30T10:48:01.4600630Z  create mode 100644 js/undo-redo.js
+2026-04-30T10:48:01.4601117Z  create mode 100644 manifest.json
+2026-04-30T10:48:01.4601550Z  create mode 100644 sw.js
+2026-04-30T10:48:01.4602245Z ##[endgroup]
+2026-04-30T10:48:01.4602816Z ##[group]Push the commit or tag
+2026-04-30T10:48:01.4603429Z [command]/usr/bin/git push origin gh-pages
+2026-04-30T10:48:01.6579340Z remote: Write access to repository not granted.
+2026-04-30T10:48:01.6587199Z fatal: unable to access 'https://github.com/elitestoryproductions/ark-mobile-studio.git/': The requested URL returned error: 403
+2026-04-30T10:48:01.6673765Z ##[error]Action failed with "The process '/usr/bin/git' failed with exit code 128"
+2026-04-30T10:48:01.6775094Z Post job cleanup.
+2026-04-30T10:48:01.7816927Z [command]/usr/bin/git version
+2026-04-30T10:48:01.7819154Z git version 2.53.0
+2026-04-30T10:48:01.7866393Z Temporarily overriding HOME='/home/runner/work/_temp/7f70e0af-9938-41cd-acbd-09309a247cfb' before making global git config changes
+2026-04-30T10:48:01.7868293Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-30T10:48:01.7874319Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ark-mobile-studio/ark-mobile-studio
+2026-04-30T10:48:01.7920291Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-30T10:48:01.7955864Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-30T10:48:01.8209600Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-30T10:48:01.8226451Z http.https://github.com/.extraheader
+2026-04-30T10:48:01.8260591Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-04-30T10:48:01.8274274Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-30T10:48:01.8527872Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-30T10:48:01.8545024Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-30T10:48:01.8888119Z Cleaning up orphan processes
+2026-04-30T10:48:01.9119624Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4, peaceiris/actions-gh-pages@v3. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
