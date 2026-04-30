@@ -1,89 +1,90 @@
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    if (typeof initCanvas === 'function') initCanvas();
-    if (typeof renderShapeGrid === 'function') renderShapeGrid();
-    if (typeof loadWork === 'function') loadWork();
-    if (typeof saveHistory === 'function') saveHistory();
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM ready');
+  
+  try {
+    initCanvas();
+    renderShapeGrid();
     
-    // Shape grid is already rendered
+    // Simple buttons
+    const btn = document.getElementById('addImageBtn');
+    if (btn) btn.onclick = function() { alert('Select a shape first, then click Add Image'); addImageToShape(); };
     
-    // Image controls
-    document.getElementById('addImageBtn')?.addEventListener('click', addImageToShape);
-    document.getElementById('addCollageBtn')?.addEventListener('click', addCollage);
-    document.getElementById('opacityDirection')?.addEventListener('change', applyOpacityGradient);
-    document.getElementById('opacityStrength')?.addEventListener('input', applyOpacityGradient);
-    document.getElementById('maskLineBtn')?.addEventListener('click', addMaskLine);
+    const undoBtn = document.getElementById('undoBtn');
+    if (undoBtn) undoBtn.onclick = function() { undo(); };
     
-    // Image position
-    document.getElementById('imgMoveUp')?.addEventListener('click', () => adjustImagePosition('up'));
-    document.getElementById('imgMoveDown')?.addEventListener('click', () => adjustImagePosition('down'));
-    document.getElementById('imgMoveLeft')?.addEventListener('click', () => adjustImagePosition('left'));
-    document.getElementById('imgMoveRight')?.addEventListener('click', () => adjustImagePosition('right'));
-    document.getElementById('imgReset')?.addEventListener('click', resetImagePosition);
-    document.getElementById('imgZoomIn')?.addEventListener('click', () => scaleImageInsideShape(0.1));
-    document.getElementById('imgZoomOut')?.addEventListener('click', () => scaleImageInsideShape(-0.1));
+    const redoBtn = document.getElementById('redoBtn');
+    if (redoBtn) redoBtn.onclick = function() { redo(); };
     
-    // Typography controls
-    document.getElementById('addTextBtn')?.addEventListener('click', addText);
-    document.getElementById('textRotate')?.addEventListener('input', (e) => rotateText(e.target.value));
-    document.getElementById('textSize')?.addEventListener('input', (e) => updateTextSize(e.target.value));
-    document.getElementById('lineSpacing')?.addEventListener('input', (e) => updateLineSpacing(e.target.value));
-    document.getElementById('charSpacing')?.addEventListener('input', (e) => updateCharSpacing(e.target.value));
-    document.getElementById('textColor')?.addEventListener('input', (e) => updateTextColor(e.target.value));
-    document.getElementById('textOpacity')?.addEventListener('input', (e) => updateTextOpacity(e.target.value));
-    document.getElementById('mirrorTextBtn')?.addEventListener('click', mirrorText);
-    document.getElementById('apply3DTextBtn')?.addEventListener('click', apply3DEffect);
-    document.getElementById('bulletStyle')?.addEventListener('change', applyBulletStyle);
-    document.getElementById('betweenDots')?.addEventListener('change', applyBetweenDots);
-    document.getElementById('applyBetweenDots')?.addEventListener('click', applyBetweenDots);
-    document.getElementById('uploadFontBtn')?.addEventListener('click', uploadCustomFont);
+    const saveBtn = document.getElementById('saveBtn');
+    if (saveBtn) saveBtn.onclick = function() { saveWork(); };
     
-    // Backdrop controls
-    document.getElementById('applyShadeBtn')?.addEventListener('click', applyBackdrop);
-    document.querySelectorAll('#shadePresets .color-swatch').forEach((swatch, i) => {
-      const colors = ['#1a1a2e', '#2e1a1a', '#1a2e1a', '#2e2e1a', '#1a2e2e', '#2e1a2e'];
-      swatch.addEventListener('click', () => loadShadePreset(colors[i]));
-    });
-    document.getElementById('shadeEffect')?.addEventListener('change', applyBackdrop);
-    document.getElementById('shadeOpacity')?.addEventListener('input', applyBackdrop);
+    const exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) exportBtn.onclick = function() { exportAsImage(); };
     
-    // Border controls
-    document.getElementById('applyBorderBtn')?.addEventListener('click', applyBorder);
-    document.getElementById('borderType')?.addEventListener('change', applyBorder);
-    document.getElementById('borderGradient')?.addEventListener('change', applyBorder);
-    document.getElementById('borderOpacity')?.addEventListener('input', (e) => updateBorderOpacity(e.target.value));
+    const uploadBtn = document.getElementById('uploadBtn');
+    if (uploadBtn) uploadBtn.onclick = function() { uploadAnyFile(); };
     
-    // Line controls
-    document.getElementById('addLineBtn')?.addEventListener('click', addLine);
-    document.getElementById('lineType')?.addEventListener('change', addLine);
-    document.getElementById('lineGradient')?.addEventListener('change', addLine);
-    document.getElementById('lineOpacity')?.addEventListener('input', (e) => updateLineOpacity(e.target.value));
+    const addTextBtn = document.getElementById('addTextBtn');
+    if (addTextBtn) addTextBtn.onclick = function() { addText(); };
     
-    // Undo/Redo
-    document.getElementById('undoBtn')?.addEventListener('click', undo);
-    document.getElementById('redoBtn')?.addEventListener('click', redo);
+    const mirrorBtn = document.getElementById('mirrorTextBtn');
+    if (mirrorBtn) mirrorBtn.onclick = function() { mirrorText(); };
     
-    // Save/Upload/Export
-    document.getElementById('saveBtn')?.addEventListener('click', saveWork);
-    document.getElementById('uploadBtn')?.addEventListener('click', uploadAnyFile);
-    document.getElementById('exportBtn')?.addEventListener('click', exportAsImage);
+    const rotateSlider = document.getElementById('textRotate');
+    if (rotateSlider) rotateSlider.oninput = function(e) { rotateText(e.target.value); };
+    
+    const sizeSlider = document.getElementById('textSize');
+    if (sizeSlider) sizeSlider.oninput = function(e) { updateTextSize(e.target.value); };
+    
+    const colorPicker = document.getElementById('textColor');
+    if (colorPicker) colorPicker.oninput = function(e) { updateTextColor(e.target.value); };
+    
+    const applyBorderBtn = document.getElementById('applyBorderBtn');
+    if (applyBorderBtn) applyBorderBtn.onclick = function() { applyBorder(); };
+    
+    const addLineBtn = document.getElementById('addLineBtn');
+    if (addLineBtn) addLineBtn.onclick = function() { addLine(); };
+    
+    const applyShadeBtn = document.getElementById('applyShadeBtn');
+    if (applyShadeBtn) applyShadeBtn.onclick = function() { applyBackdrop(); };
+    
+    const maskBtn = document.getElementById('maskLineBtn');
+    if (maskBtn) maskBtn.onclick = function() { addMaskLine(); };
+    
+    // Image position buttons
+    const upBtn = document.getElementById('imgMoveUp');
+    if (upBtn) upBtn.onclick = function() { adjustImagePosition('up'); };
+    const downBtn = document.getElementById('imgMoveDown');
+    if (downBtn) downBtn.onclick = function() { adjustImagePosition('down'); };
+    const leftBtn = document.getElementById('imgMoveLeft');
+    if (leftBtn) leftBtn.onclick = function() { adjustImagePosition('left'); };
+    const rightBtn = document.getElementById('imgMoveRight');
+    if (rightBtn) rightBtn.onclick = function() { adjustImagePosition('right'); };
+    const resetBtn = document.getElementById('imgReset');
+    if (resetBtn) resetBtn.onclick = function() { resetImagePosition(); };
+    const zoomInBtn = document.getElementById('imgZoomIn');
+    if (zoomInBtn) zoomInBtn.onclick = function() { scaleImageInsideShape(0.1); };
+    const zoomOutBtn = document.getElementById('imgZoomOut');
+    if (zoomOutBtn) zoomOutBtn.onclick = function() { scaleImageInsideShape(-0.1); };
     
     // Drawer
     const drawer = document.getElementById('toolDrawer');
     const trigger = document.getElementById('floatingTrigger');
     const closeBtn = document.getElementById('closeDrawer');
-    
-    trigger?.addEventListener('click', () => {
+    if (trigger) trigger.onclick = function() {
       drawer.classList.toggle('open');
       document.body.classList.toggle('drawer-open');
-      setTimeout(() => canvas?.renderAll(), 300);
-    });
-    
-    closeBtn?.addEventListener('click', () => {
+      setTimeout(function() { if (canvas) canvas.renderAll(); }, 300);
+    };
+    if (closeBtn) closeBtn.onclick = function() {
       drawer.classList.remove('open');
       document.body.classList.remove('drawer-open');
-    });
+    };
     
-    updateStatus('Ready | All tools available');
-  }, 100);
+    updateStatus('Ready! Tap magic wand');
+    console.log('App initialized');
+  } catch(e) {
+    console.error('Init error:', e);
+    updateStatus('Error: ' + e.message);
+  }
 });

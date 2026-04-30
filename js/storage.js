@@ -1,31 +1,23 @@
-function saveWork() {
-  if (!canvas) return;
-  const data = JSON.stringify(canvas.toJSON());
-  localStorage.setItem('ark_studio_save', data);
-  updateStatus('Work saved locally');
-}
-
-function loadWork() {
-  if (!canvas) return;
-  const saved = localStorage.getItem('ark_studio_save');
-  if (saved) {
-    canvas.loadFromJSON(JSON.parse(saved), () => {
-      canvas.renderAll();
-      updateStatus('Work loaded from save');
-    });
-  } else {
-    updateStatus('No saved work found');
-  }
-}
-
-function exportAsImage() {
-  html2canvas(document.querySelector('#canvas-container')).then(canv => {
-    const link = document.createElement('a');
-    link.download = `ark-studio-${Date.now()}.png`;
-    link.href = canv.toDataURL();
-    link.click();
-    updateStatus('Exported as PNG');
-  }).catch(err => {
-    updateStatus('Export failed: ' + err.message);
-  });
+function uploadAnyFile() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,.txt';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const json = JSON.parse(ev.target.result);
+        if (json.objects) {
+          canvas.loadFromJSON(json, function() { canvas.renderAll(); updateStatus('Loaded'); });
+          return;
+        }
+      } catch(e) {}
+      const text = new fabric.IText(ev.target.result.substring(0, 500), { left: 100, top: 100 });
+      canvas.add(text);
+      updateStatus('File added as text');
+    };
+    reader.readAsText(file);
+  };
+  input.click();
 }
