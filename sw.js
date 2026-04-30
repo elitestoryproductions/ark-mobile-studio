@@ -1,9 +1,8 @@
-const CACHE_NAME = 'ark-studio-v1';
+const CACHE_NAME = 'ark-studio-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/css/styles.css',
-  '/css/all.min.css',
   '/js/app.js',
   '/js/canvas-manager.js',
   '/js/image-editor.js',
@@ -12,8 +11,6 @@ const urlsToCache = [
   '/js/undo-redo.js',
   '/js/storage.js',
   '/js/file-upload.js',
-  '/lib/fabric.min.js',
-  '/lib/html2canvas.min.js',
   '/manifest.json'
 ];
 

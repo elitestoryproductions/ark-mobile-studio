@@ -1,7 +1,40 @@
-// Canvas initialization and shape management
 let canvas;
 let historyStack = [];
 let historyIndex = -1;
+
+function saveHistory() {
+  if (!canvas) return;
+  const state = JSON.stringify(canvas.toJSON());
+  if (historyIndex < historyStack.length - 1) {
+    historyStack = historyStack.slice(0, historyIndex + 1);
+  }
+  historyStack.push(state);
+  historyIndex = historyStack.length - 1;
+  if (historyStack.length > 50) historyStack.shift();
+  updateStatus(`History: ${historyIndex + 1}/${historyStack.length}`);
+}
+
+function undo() {
+  if (!canvas) return;
+  if (historyIndex > 0) {
+    historyIndex--;
+    canvas.loadFromJSON(historyStack[historyIndex], () => canvas.renderAll());
+  }
+}
+
+function redo() {
+  if (!canvas) return;
+  if (historyIndex < historyStack.length - 1) {
+    historyIndex++;
+    canvas.loadFromJSON(historyStack[historyIndex], () => canvas.renderAll());
+  }
+}
+
+function updateStatus(msg) {
+  const status = document.getElementById('statusMsg');
+  if (status) status.innerText = msg;
+  console.log(msg);
+}
 
 function initCanvas() {
   canvas = new fabric.Canvas('design-canvas');
@@ -13,34 +46,42 @@ function initCanvas() {
   canvas.on('object:added', saveHistory);
   canvas.on('object:removed', saveHistory);
   
-  // Enable free corner stretching (each corner independent)
   canvas.on('object:selected', (e) => {
     const obj = e.target;
     if (obj) {
+      // Only top-right corner resizes (corner 1)
       obj.set('hasRotatingPoint', true);
       obj.set('cornerSize', 8);
       obj.set('transparentCorners', false);
       obj.set('cornerColor', '#e0b05a');
       obj.set('cornerStrokeColor', '#b47c2e');
+      // Disable other resize corners, keep stretching
+      obj.set('hasControls', true);
+      obj.set('lockScalingX', false);
+      obj.set('lockScalingY', false);
       canvas.renderAll();
     }
   });
 }
 
-// 50+ shapes
 const shapes = [
-  'circle', 'rect', 'triangle', 'ellipse', 'heart', 'star', 'hexagon', 
-  'pentagon', 'diamond', 'cross', 'arrow', 'trapezoid', 'parallelogram', 
-  'octagon', 'cloud', 'blob', 'leaf', 'teardrop', 'ring', 'donut', 
-  'crescent', 'pill', 'bolt', 'infinity', 'clover', 'spade', 'club', 
-  'shield', 'flag', 'cube', 'cylinder', 'cone', 'pyramid', 'sphere', 
-  'halfcircle', 'frame', 'burst', 'drop', 'moon', 'sun', 'flower', 
-  'snowflake', 'gear', 'ribbon', 'tag', 'bubble', 'roundedRect', 'zigzag', 'wave', 'spiral'
+  'circle', 'rect', 'triangle', 'heart', 'star', 'diamond', 'hexagon', 
+  'pentagon', 'octagon', 'cloud', 'leaf', 'teardrop', 'pill', 'bolt', 
+  'infinity', 'clover', 'shield', 'flag', 'cube', 'sphere', 'drop', 
+  'moon', 'sun', 'flower', 'snowflake', 'gear', 'ribbon', 'bubble', 
+  'roundedRect', 'zigzag', 'wave', 'spiral', 'cross', 'arrow', 
+  'parallelogram', 'trapezoid', 'ring', 'donut', 'crescent', 'blob', 
+  'frame', 'burst', 'tag', 'cone', 'pyramid', 'cylinder', 'halfcircle', 
+  'spade', 'club'
 ];
 
 function addShape(type) {
+  if (!canvas) return;
   let obj;
-  const opts = { left: 100, top: 100, fill: '#c9a03d', stroke: '#b47c2e', strokeWidth: 2, selectable: true };
+  const opts = { 
+    left: 100, top: 100, fill: '#c9a03d', stroke: '#b47c2e', strokeWidth: 2, 
+    selectable: true, hasRotatingPoint: true, cornerSize: 8, cornerColor: '#e0b05a'
+  };
   
   switch(type) {
     case 'circle': obj = new fabric.Circle({ radius: 50, ...opts }); break;
@@ -55,18 +96,20 @@ function addShape(type) {
   canvas.add(obj);
   canvas.setActiveObject(obj);
   canvas.renderAll();
+  saveHistory();
+  updateStatus(`Added ${type} shape`);
 }
 
 function renderShapeGrid() {
   const grid = document.getElementById('shapeGrid');
   if (!grid) return;
-  
+  grid.innerHTML = '';
   for (let i = 0; i < 50; i++) {
     const s = shapes[i % shapes.length];
     const div = document.createElement('div');
     div.className = 'shape-card';
     div.innerHTML = `<i class="fas fa-${s === 'rect' ? 'square' : s === 'circle' ? 'circle' : 'shape'}"></i><span>${s}</span>`;
-    div.onclick = () => addShape(s);
+    div.onclick = (function(shapeName) { return function() { addShape(shapeName); }; })(s);
     grid.appendChild(div);
   }
 }

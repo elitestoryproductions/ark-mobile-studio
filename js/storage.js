@@ -1,15 +1,17 @@
 function saveWork() {
+  if (!canvas) return;
   const data = JSON.stringify(canvas.toJSON());
   localStorage.setItem('ark_studio_save', data);
   updateStatus('Work saved locally');
 }
 
 function loadWork() {
+  if (!canvas) return;
   const saved = localStorage.getItem('ark_studio_save');
   if (saved) {
     canvas.loadFromJSON(JSON.parse(saved), () => {
       canvas.renderAll();
-      updateStatus('Work loaded');
+      updateStatus('Work loaded from save');
     });
   } else {
     updateStatus('No saved work found');
@@ -23,5 +25,7 @@ function exportAsImage() {
     link.href = canv.toDataURL();
     link.click();
     updateStatus('Exported as PNG');
+  }).catch(err => {
+    updateStatus('Export failed: ' + err.message);
   });
 }

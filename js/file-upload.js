@@ -1,7 +1,7 @@
 function uploadAnyFile() {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = '.json,.txt,.docx,.pdf,.jpg,.png';
+  input.accept = '.json,.txt,.docx,.pdf,.jpg,.png,.svg';
   input.onchange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -9,7 +9,6 @@ function uploadAnyFile() {
     reader.onload = (ev) => {
       const content = ev.target.result;
       
-      // Try to parse as JSON (canvas data)
       try {
         const jsonData = typeof content === 'string' ? JSON.parse(content) : null;
         if (jsonData && jsonData.objects) {
@@ -19,7 +18,7 @@ function uploadAnyFile() {
         }
       } catch(e) {}
       
-      // If not JSON, add as text element
+      // Add as text element
       const text = new fabric.IText(content.substring(0, 500), {
         left: 100, top: 100, fontSize: 16, fill: '#2c2c2c'
       });
